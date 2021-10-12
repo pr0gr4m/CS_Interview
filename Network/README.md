@@ -1,11 +1,11 @@
 # Network
 
-* OSI 7 Layer
-* TCP UDP 차이
+* [OSI 7 Layer](#OSI-7-Layer)
+* [TCP UDP 차이](#TCP-UDP-차이)
 * TCP 3 way handshake
 * TCP 4 way handshake
 * 흐름제어와 혼잡제어
-* BGP 프로토콜
+* [BGP 프로토콜](#BGP-프로토콜)
 
 <br>
 
@@ -67,6 +67,19 @@
     * 부하와 전송속도가 매우 빠르다.
     * 데이터의 완전성보다 전달 속도가 중요한 애플리케이션에 적합하다.
     * 멀티미디어 애플리케이션, DNS(일반적인 쿼리 경우), DHCP, RIP, SNMP, HTTP(3.0, QUIC)
+
+## TCP 3 way handshake
+
+* TCP 통신을 하기 위하여 클라이언트와 서버 간에 SYN, SYN/ACK, ACK 세 번의 트랜잭션을 주고 받아서 연결을 맺는 과정
+1. 클라이언트 -> 서버 : SYN
+    * 클라이언트가 서버에게 임의의 SEQ 넘버로 SYN 플래그가 설정된 패킷을 송신한다.
+    * PORT 상태 : 클라이언트(SYN_SENT), 서버(LISTEN)
+2. 서버 -> 클라이언트 : SYN + ACK
+    * 서버는 SEQ 넘버를 랜덤, ACK 넘버를 수신한 SEQ + 1로 지정하고, SYN과 ACK 플래그를 설정한 패킷을 송신한다.
+    * PORT 상태 : 서버(SYN_RCVD), 클라이언트(SYN_SENT)
+3. 클라이언트 -> 서버 : ACK
+    * 클라이언트는 SEQ 넘버를 수신한 ACK, ACK 넘버를 수신한 SEQ + 1로 지정하고, ACK 플래그를 설정한 패킷을 송신한다.
+    * PORT 상태 : 클라이언트(ESTABLISHED), 서버(ESTABLISHED)
 
 ## BGP 프로토콜
 
