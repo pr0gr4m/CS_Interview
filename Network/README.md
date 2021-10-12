@@ -4,7 +4,7 @@
 * [TCP UDP 차이](#TCP-UDP-차이)
 * [TCP 3 way handshake](#TCP-3-way-handshake)
 * [TCP 4 way handshake](#TCK-4-way-handshake)
-* 흐름제어와 혼잡제어
+* 흐름제어와 혼잡제어(#흐름제어와-혼잡제어)
 * [BGP 프로토콜](#BGP-프로토콜)
 
 <br>
@@ -102,6 +102,17 @@
     * TIME_WAIT 상태는 마지막으로 송신한 ACK 패킷이 유실되는 경우를 대비한 상태이다. passive close 측이 LAST_ACK 상태에서 (ACK 패킷 유실 등의 이유로) 일정 시간동안 ACK 패킷을 받지 못하면 FIN 패킷을 재전송한다. 만약 TIME_WAIT 상태 없이 active close 측이 바로 소켓을 close 했다면 위 상황에서 재전송한 FIN 패킷을 수신할 수 없게 된다. 따라서, TIME_WAIT 상태로 일정 시간동안 FIN 패킷의 재전송을 기다린 후 CLOSE 하게 된다.
     * 하지만 connect/close가 자주 발생하는 환경에서는 TIME_WAIT 상태 때문에 포트 번호 고갈이 일어날 수 있다. 이런 상황을 해소하기 위하여 소켓에 SO_REUSEADDR이나 SO_LINGER 옵션을 사용하여 포트 주소를 강제로 재사용하거나 접속을 강제로 해제할 수도 있지만, 위와 같은 문제의 소지가 생길 수 있다. 따라서, 네트워크 프로그램 개발 시 Keep-Alive 세션 등을 통해 과도한 접속과 해제를 하지 않도록 설계해야 한다.
 * 작성한 프로그램(active close 측)에서 FIN_WAIT2 상태가 계속 보인다면 상대편 프로세스(passive close 측)에서 FIN 패킷을 주고 있지 않는 것이므로 상대편 프로세스에 close() 루틴이 제대로 동작하지 않는 것이다. 반대로 작성한 프로그램(passive close 측)에서 CLOSE_WAIT이 계속 발생한다면 FIN 패킷을 수신하여 ACK 응답을 한 후, FIN 패킷을 송신하지 않고 있다는 것이다. 즉, 작성한 프로그램에서 close() 루틴이 제대로 동작하지 않는 것이다.
+
+## 흐름제어와 혼잡제어
+
+* 흐름제어는 송신측의 데이터 전송 속도보다 수신측의 데이터 처리 속도가 느린 경우 생기는 패킷 유실을 제어하는 것이다. 일반적으로 슬라이딩 윈도우를 통해 흐름 제어를 구현한다.
+    * 수신 측에서 송신 측에게 윈도우 크기(수신 측의 버퍼 크기)를 알려준다.
+    * 송신 측에서 수신 측의 윈도우 크기를 알고 있으므로 해당 크기 만큼은 ACK 응답을 받지 않고도 데이터를 송신하여 통신 속도를 높인다. 송신 측에서는 데이터를 보낼 때마다 알고 있는 윈도우 크기를 송신한 데이터 크기 만큼 감소시킨다. 즉, 윈도우 크기가 0보다 크다면 계속 데이터를 송신할 수 있다.
+* 혼잡제어는 네트워크 내에 패킷이 과도하게 증가하여 패킷이 손실하는 현상을 방지 및 제어하는 것이다.
+    * TCP는 각 연결마다 congestion window를 관리한다. congestion window size는 ACK 패킷이 수신되지 않은 패킷의 최대 개수이다. TCP는 연결이 시작되었을 때와 timeout이 발생했을 때(재전송이 발생할 때), slow start라는 상태에 진입한다. 해당 상태에서 congestion window size는 작은 값을 갖고, 점차 size를 늘려준다. 일반적으로 처음 congestion window size는 MSS의 두 배이며(과거 1배), 각 패킷에 대해 ACK 패킷을 받을 때마다 size는 MSS의 크기 만큼 늘어난다. 따라서, 매 왕복 마다 size는 두 배가 된다.
+    * congestion window size가 ssthresh라고 불리는 한계점을 초과하면 혼잡 방지 상태에 진입한다. 대표적인 혼잡 방지 알고리즘은 다음과 같다.
+        * TCP Tahoe : ACK 중복 수신이 3회 발생하거나 timeout이 발생하면 ssthresh 값을 현재 window size의 반으로 설정하고, window size는 MSS의 크기와 같게 설정한 후, 다시 slow start 상태로 진입한다.
+        * TCP Reno : ACK 중복 수신이 3회 발생하면 window size를 반으로 줄이고 이 후 window size를 선형 증가시킨다. timeout 시에는 Tahoe와 같은 방식으로 동작한다.
 
 ## BGP 프로토콜
 
