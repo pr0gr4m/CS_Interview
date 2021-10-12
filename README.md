@@ -7,13 +7,13 @@
 
 다음과 같은 자료들을 참고했습니다.
 
-* ![Linux Kernel Source Code](https://elixir.bootlin.com/linux/latest/source)
-* ![FreeBSD Source Code](https://github.com/freebsd/freebsd-src)
-* ![LWN](https://lwn.net/)
-* ![Advanced Programming in the UNIX Environment](http://www.yes24.com/Product/Goods/7991944)
-* ![Advanced! 리눅스 시스템 네트워크 프로그래밍](http://www.yes24.com/Product/Goods/26902320)
-* ![TCP/IP Illustrated](http://www.yes24.com/Product/Goods/4739649)
-* ![TCP/IP 완벽 가이드](http://www.yes24.com/Product/Goods/2355754)
-* ![Database System Concepts](http://www.yes24.com/Product/Goods/58794046)
-* ![문c 블로그](http://jake.dothome.co.kr/)
-* ![ISO/IEC 9899 draft](https://pr0gr4m.tistory.com/entry/ISOIEC-9899-draft?category=714119)
+* [Linux Kernel Source Code](https://elixir.bootlin.com/linux/latest/source)
+* [FreeBSD Source Code](https://github.com/freebsd/freebsd-src)
+* [LWN](https://lwn.net/)
+* [Advanced Programming in the UNIX Environment](http://www.yes24.com/Product/Goods/7991944)
+* [Advanced! 리눅스 시스템 네트워크 프로그래밍](http://www.yes24.com/Product/Goods/26902320)
+* [TCP/IP Illustrated](http://www.yes24.com/Product/Goods/4739649)
+* [TCP/IP 완벽 가이드](http://www.yes24.com/Product/Goods/2355754)
+* [Database System Concepts](http://www.yes24.com/Product/Goods/58794046)
+* [문c 블로그](http://jake.dothome.co.kr/)
+* [ISO/IEC 9899 draft](https://pr0gr4m.tistory.com/entry/ISOIEC-9899-draft?category=714119)
