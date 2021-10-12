@@ -2,8 +2,8 @@
 
 * [OSI 7 Layer](#OSI-7-Layer)
 * [TCP UDP 차이](#TCP-UDP-차이)
-* TCP 3 way handshake
-* TCP 4 way handshake
+* [TCP 3 way handshake](#TCP-3-way-handshake)
+* [TCP 4 way handshake](#TCK-4-way-handshake)
 * 흐름제어와 혼잡제어
 * [BGP 프로토콜](#BGP-프로토콜)
 
@@ -80,6 +80,22 @@
 3. 클라이언트 -> 서버 : ACK
     * 클라이언트는 SEQ 넘버를 수신한 ACK, ACK 넘버를 수신한 SEQ + 1로 지정하고, ACK 플래그를 설정한 패킷을 송신한다.
     * PORT 상태 : 클라이언트(ESTABLISHED), 서버(ESTABLISHED)
+
+## TCP 4 way handshake
+
+* TCP 연결을 안정적으로 해제하기 위하여 클라이언트와 서버 간에 FIN, ACK, FIN, ACK 네 번의 트랜잭션을 주고 받는 과정
+1. 클라이언트 -> 서버 : FIN
+    * 클라이언트가 서버에게 FIN 플래그가 설정된 패킷을 송신한다.
+    * PORT 상태 : 클라이언트(FIN_WAIT1), 서버(ESTABLISHED)
+2. 서버 -> 클라이언트 : ACK
+    * 서버가 클라이언트에게 ACK 플래그가 설정된 패킷을 송신한다.
+    * PORT 상태 : 서버(CLOSE_WAIT), 클라이언트(FIN_WAIT2)
+3. 서버 -> 클라이언트 : FIN
+    * 서버가 클라이언트에게 FIN 플래그가 설정된 패킷을 송신한다.
+    * PORT 상태 : 서버(LAST_ACK), 클라이언트(FIN_WAIT2)
+4. 클라이언트 -> 서버 : ACK
+    * 클라이언트가 서버에게 ACK 플래그가 설정된 패킷을 송신한다.
+    * PORT 상태 : 클라이언트(TIME_WAIT), 서버(CLOSED)
 
 ## BGP 프로토콜
 
