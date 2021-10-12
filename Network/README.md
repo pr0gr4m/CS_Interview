@@ -84,6 +84,7 @@
 ## TCP 4 way handshake
 
 * TCP 연결을 안정적으로 해제하기 위하여 클라이언트와 서버 간에 FIN, ACK, FIN, ACK 네 번의 트랜잭션을 주고 받는 과정
+* 보통 연결 종료는 클라이언트에서 먼저 시도한다. 하지만 서버 측에서도 timeout 등의 이유로 먼저 연결 종료를 시도할 수도 있다. 아래 과정은 클라이언트가 active close, 서버가 passive close 하는 상황을 가정한다.
 1. 클라이언트 -> 서버 : FIN
     * 클라이언트가 서버에게 FIN 플래그가 설정된 패킷을 송신한다.
     * PORT 상태 : 클라이언트(FIN_WAIT1), 서버(ESTABLISHED)
@@ -96,6 +97,10 @@
 4. 클라이언트 -> 서버 : ACK
     * 클라이언트가 서버에게 ACK 플래그가 설정된 패킷을 송신한다.
     * PORT 상태 : 클라이언트(TIME_WAIT), 서버(CLOSED)
+* FIN_WAIT1은 자신이 보낸 FIN 패킷에 대해 ACK을 기다리는 상태이고, FIN_WAIT2는 상대방의 FIN 패킷을 기다리는 상태이다. FIN과 ACK을 함께 보내지 않는 이유는, ACK은 TCP 시스템상 즉각 응답하는 패킷이고 FIN은 프로세스가 passive close 과정을 거쳐서 전송하는 패킷이기 때문이다.
+* active close 하는 측이 마지막 ACK 패킷을 송신하고 나면 TIME_WAIT 상태가 된다. TIME_WAIT 상태에서 MSL(Maximum Segment Lifetime)의 2배의 시간만큼 기다리며 해당 포트를 점유하는데, 이 시간동안 해당 포트 주소를 사용할 수 없다.
+    * TIME_WAIT 상태는 마지막으로 송신한 ACK 패킷이 유실되는 경우를 대비한 상태이다. passive close 측이 LAST_ACK 상태에서 (ACK 패킷 유실 등의 이유로) 일정 시간동안 ACK 패킷을 받지 못하면 FIN 패킷을 재전송한다. 만약 TIME_WAIT 상태 없이 active close 측이 바로 소켓을 close 했다면 위 상황에서 재전송한 FIN 패킷을 수신할 수 없게 된다. 따라서, TIME_WAIT 상태로 일정 시간동안 FIN 패킷의 재전송을 기다린 후 CLOSE 하게 된다.
+    * 하지만 connect/close가 자주 발생하는 환경에서는 TIME_WAIT 상태 때문에 포트 번호 고갈이 일어날 수 있다. 이런 상황을 해소하기 위하여 소켓에 SO_REUSEADDR이나 SO_LINGER 옵션을 사용하여 포트 주소를 강제로 재사용하거나 접속을 강제로 해제할 수도 있지만, 위와 같은 문제의 소지가 생길 수 있다. 따라서, 네트워크 프로그램 개발 시 Keep-Alive 세션 등을 통해 과도한 접속과 해제를 하지 않도록 설계해야 한다.
 
 ## BGP 프로토콜
 
