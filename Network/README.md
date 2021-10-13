@@ -166,7 +166,25 @@
 
 ## DHCP 프로토콜
 
-
+* DHCP(Dynamic Host Configuration Protocol)은 호스트 IP 구성 관리를 단순화하기 위하여, IP 주소 및 관련된 기타 구성 정보를 네트워크를 통해 동적으로 할당하는 프로토콜이다.
+* DHCP를 사용하면 사용자가 직접 입력해야 하는 IP 주소, 서브넷 마스크, 게이트웨이, DNS 정보 등을 자동으로 할당받아 사용할 수 있다.
+* DHCP는 BOOTP 프로토콜을 확장한 프로토콜이기 때문에 서버의 서비스 포트는 67(bootps), 클라이언트 서비스 포트는 68(bootpc)을 사용한다.
+* DHCP 동작 과정
+    1. DHCP Discover
+        * DHCP 클라이언트가 DHCP 서버를 찾기 위해 DHCP Discover 메시지를 브로드캐스트로 송신한다.
+        * 아직 클라이언트는 IP를 할당받지 않은 상태이기 때문에 패킷의 Source IP 주소는 0.0.0.0으로 설정된다. Destination IP는 브로드캐스트 주소로 설정된다.
+        * DHCP 메시지에는 클라이언트의 MAC 주소가 포함된다.
+    2. DHCP Offer
+        * DHCP Discover 메시지를 수신한 DHCP 서버가 클라이언트에게 서버에 대한 정보를 포함한 DHCP 메시지를 송신한다.
+        * DHCP 메시지에는 클라이언트에 할당할 IP, 클라이언트 MAC, 서브넷, 게이트웨이, DNS 정보, Lease Time, Server 식별자 등의 정보가 포함된다.
+        * 아직 클라이언트의 IP 주소가 할당되지 않았으므로 Destination IP 주소는 브로드캐스트이다.
+    3. DHCP Request
+        * DHCP 클라이언트가 DHCP 서버에게 주소를 할당받기 위하여 DHCP Request 메시지를 브로드캐스트로 송신한다.
+        * 마찬가지로 아직 클라이언트는 IP를 할당받지 않은 상태이기 때문에 패킷의 Source IP 주소는 0.0.0.0으로 설정되며 Destination IP는 브로드캐스트 주소로 설정된다.        
+        * DHCP 메시지에는 DHCP 서버로부터 제안받은 IP 주소, 클라이언트 MAC, DHCP 서버 식별자 등이 포함된다.
+    4. DHCP Acknowledgement
+        * DHCP Request 메시지를 수신한 DHCP 서버가 해당 IP와 클라이언트의 매핑 정보를 기록하고 DHCP Request 메시지를 정상적으로 처리했다는 응답으로 DHCP ACK 메시지를 송신한다.
+        * 클라이언트가 해당 메시지를 수신하면 클라이언트에게 IP 주소를 포함한 네트워크 정보가 정상적으로 할당된다.
 
 ## 네트워크 장비
 
