@@ -1,5 +1,6 @@
 # Network
 
+* [프로토콜과 패킷](#프로토콜과-패킷)
 * [OSI 7 Layer](#OSI-7-Layer)
 * [TCP UDP 차이](#TCP-UDP-차이)
 * [TCP 3 way handshake](#TCP-3-way-handshake)
@@ -15,6 +16,17 @@
 <br>
 
 ---
+
+## 프로토콜과 패킷
+
+* 프로토콜 : 통신 프로토콜은 컴퓨터나 원거리 통신 장비에서 메시지를 주고 받는 양식과 규칙의 체계로 정의된다. 일반적인 정의 요소는 다음과 같다.
+    * syntax, semantics, timing 세 가지 요소에 대한 정의
+    * event, action, format 세 가지 요소에 대한 정의
+* 패킷
+    * 정보 통신 기술은 크게 전화선에 사용하는 circuit switching 방식과 인터넷에 사용하는 packet switching 방식이 있다. 이 중 packet switching 방식에서 사용하는 데이터 블록을 패킷이라고 한다.
+        * circuit switching 방식은 통신 수립 과정이 필요하지만 수립 이 후엔 통신 매체를 점유하여 통신에 대한 오류 및 오버헤드의 소지가 적다.
+        * packet switching 방식은 별도의 통신 수립 과정이 필요 없지만 통신 매체를 공유하기 때문에 패킷의 loss 및 delay 소지가 생긴다. 또한 통신 매체 공유로 인하여 더 많은 사용자를 수용할 수 있다.
+    * OSI 7 레이어 상에서 3계층인 Network 계층의 PDU(Protocol Data Unit) 이름 또한 패킷이다. packet switching 네트워크에서 사용하는 데이터 블록의 패킷과, OSI 7 Layer의 PDU 패킷은 구분되어야 한다.
 
 ## OSI 7 Layer
 
